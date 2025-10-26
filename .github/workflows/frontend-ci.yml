@@ -10,18 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint code
-        run: npm run lint || echo "Add lint script to package.json"
+      uses: ./.github/workflows/reusable-test.yml
+      with:
+        node-version: "20"
 
   test-matrix:
     runs-on: ${{ matrix.os }}
