@@ -23,8 +23,21 @@ jobs:
       - name: Lint code
         run: npm run lint || echo "Add lint script to package.json"
 
-      - name: Run tests
-        run: npm test -- --passWithNoTests
+  test-matrix:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node-version: [18, 20]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm ci
+      - run: npm test -- --passWithNoTests
 
   build:
     needs: lint-and-test
